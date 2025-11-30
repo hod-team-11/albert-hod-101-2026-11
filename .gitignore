@@ -1,0 +1,44 @@
+# -------------------------------------------------------------------------
+# Environnement Python
+# -------------------------------------------------------------------------
+
+# Dossiers d'environnements virtuels
+/venv
+/env
+
+# Cache et Bytecode Python
+__pycache__/
+*.pyc
+
+# Fichiers temporaires et de build
+*.egg-info/
+build/
+dist/
+
+# -------------------------------------------------------------------------
+# Fichiers sensibles et locaux
+# -------------------------------------------------------------------------
+
+# Variables d'environnement / Secrets
+.env
+.flaskenv
+
+# Bases de données locales (ex: pour SQLite)
+db.sqlite3
+*.db
+
+# -------------------------------------------------------------------------
+# Fichiers spécifiques à l'OS ou à l'IDE (Exemples courants)
+# -------------------------------------------------------------------------
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Visual Studio Code
+.vscode/
+
+# PyCharm/IntelliJ
+.idea/
