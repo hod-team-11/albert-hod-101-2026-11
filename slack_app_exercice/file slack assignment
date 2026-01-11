@@ -1,0 +1,50 @@
+pip install slack_sdk
+import os
+from slack_sdk import WebClient
+from slack_sdk.errors import SlackApiError
+
+
+# 1. Configuration
+# Replace with your actual Bot User OAuth Token (xoxb-...)
+SLACK_BOT_TOKEN = "xoxb-10255318063361-10266968565940-gihiJMW2PNDBz3kF5r793Qxc"
+
+# 2. The Channel ID 
+CHANNEL_ID = "C0A79R6BCUX"
+
+# 3. The path to the folder containing your images
+# Use r"" for raw strings to avoid issues with backslashes on Windows
+IMAGE_FOLDER = r"pictures"
+python bot.py
+
+
+files = os.listdir ("pictures")
+valid_extensions = ('.png', '.jpg', '.jpeg', '.gif', '.bmp')
+client.files_upload_v2(
+    channel_id=channel_id,
+    file=file_path,
+    title=filename,
+    initial_comment=f"Here is an image: "{pictures}\
+    
+    import logging
+logging.basicConfig(level=logging.DEBUG)
+
+import os
+from slack_sdk import WebClient
+from slack_sdk.errors import SlackApiError
+
+slack_token = os.environ["xoxb-10255318063361-10266968565940-gihiJMW2PNDBz3kF5r793Qxc"]
+client = WebClient(token=slack_token)
+
+try:
+    response = client.chat_postMessage(
+        channel="C0A79R6BCUX",
+        text="Hello from your app! :tada:"
+    )
+except SlackApiError as e:
+    # You will get a SlackApiError if "ok" is False
+
+    assert e.response["error"]    # str like 'invalid_auth', 'channel_not_found'
+
+
+    #Part 2: write a loop that posts all images of the folder to the channel (you need to assume that you do not know in advance how many images you will have in the folder)
+    #Part 3: what if I want my bot to interact with people? Write a script that waits for a “Wikipedia:[title]” message in the main channel from me (Woody) responds with the first paragraph of the corresponding Wikipedia page (beware of errors!) then waits again for the next message
