@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 import wikipedia
+from pathlib import Path
 
 # On charge le .env en utilisant override=True pour être sûr de bien écraser les vieilles versions en mémoire
 load_dotenv(override=True)
@@ -68,7 +69,9 @@ interaction()
 ############################################################################################
 
 # on définit le dossier source des images, on est au même niveau que le fichier python
-dossier_source = "dossier_image" 
+script_dir = Path(__file__).parent
+
+dossier_source = script_dir / "dossier_image"
 
 def envoyer_images():
     try:
