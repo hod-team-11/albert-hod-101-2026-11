@@ -1,0 +1,33 @@
+#Création d'un compteur et d'une table avec la commande with
+WITH base AS (
+  SELECT # on appelle les colonnes
+    id_customer_synth,
+    order_datetime_synth,
+    is_free_delivery,
+    SUM(CASE WHEN is_free_delivery = 0 THEN 1 ELSE 0 END) #création d'un objet permettant de séparer les commandes gratuites des payantes
+      OVER (PARTITION BY id_customer_synth ORDER BY order_datetime_synth) AS grp #on partitionne par id_customer_synth puis on trie par date croissante par defaut
+  FROM `assignment_data.synthetic_deliveroo_plus_dataset` #appel de la table
+),
+series AS (
+  SELECT # on appelle les colonnes
+    id_customer_synth,
+    grp,
+    COUNTIF(is_free_delivery = 1) AS nb_free, # on regarde les commandes sans frais
+    MIN(order_datetime_synth) AS first_free_date, # on prend la date min pour la date de début d'abonnement
+    MAX(order_datetime_synth) AS last_free_date # On prend la date max pour la date de fin d'abonnement
+  FROM base
+  GROUP BY id_customer_synth, grp # on groupe par numéro client et par série (fait plus haut)
+  HAVING nb_free >= 3 # condition pour avoir au minimun une série de 3 commandes sans frais
+)
+SELECT # on appelle les colonnes
+  b.id_customer_synth,
+  b.order_datetime_synth,
+  b.is_free_delivery,
+  CASE WHEN b.is_free_delivery = 1 THEN s.first_free_date ELSE NULL END AS first_free_date, # on ne veut pas de dates si free delivery different de 1, correction d'un effet de bord du code plus haut
+  CASE WHEN b.is_free_delivery = 1 THEN s.last_free_date ELSE NULL END AS last_free_date,# on ne veut pas de dates si free delivery different de 1, correction d'un effet de bord du code plus haut
+  CASE WHEN b.is_free_delivery = 1 THEN TIMESTAMP_DIFF(s.last_free_date, s.first_free_date, DAY) ELSE NULL END AS duree_jours # on ne veut pas de dates si free delivery different de 1, correction d'un effet de bord du code plus haut et création d'une colonne qui revoie la durée de l'abonnement
+FROM base AS b # b pour le pseudo de base
+LEFT JOIN series AS s #on join la table série et la table de calcule des dates
+  ON b.id_customer_synth = s.id_customer_synth # on les join par rapport à l'indetifait client. Au préalable on les a trié chaqu'une par date pour rester cohérent
+ AND b.grp = s.grp # vérifie que les grp sont les mêmes (deuxieme sécurité)
+ORDER BY b.id_customer_synth, b.order_datetime_synth; #on trie par customer id et date
