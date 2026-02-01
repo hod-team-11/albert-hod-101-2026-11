@@ -11,3 +11,9 @@ __pycache__/
 Thumbs.db
 
 .ipynb_checkpoints/
+
+.othelloenv/
+env/
+venv/
+__pycache__/
+*.py[cod]
